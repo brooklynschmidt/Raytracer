@@ -132,4 +132,9 @@ inline Vec3 operator-(const Point& a, const Point& b) {
     return Vec3(a.val() - b.val());
 }
 
+// Convert Point to normalized Vec3
+inline Vec3 unit(const Point& p) {
+    return Vec3(glm::normalize(p.val()));
+}
+
 #endif

@@ -8,6 +8,6 @@ Color ray_color(const Ray& r);
 
 void write_color(std::ostream& out, const Color& pixel_color);
 
-bool hit_sphere(const Point& center, double radius, const Ray& r);
+double hit_sphere(const Point& center, double radius, const Ray& r);
 
 #endif

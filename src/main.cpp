@@ -11,7 +11,7 @@ int main() {
     // Image Properties
     auto aspect_ratio = 16.0 / 9.0;
     int image_width = 400;
-    int image_height = image_width / aspect_ratio;
+    int image_height = int(image_width / aspect_ratio);
     image_height = (image_height < 1) ? 1 : image_height;
 
     // Camera
@@ -35,10 +35,9 @@ int main() {
     cout << image_width << ' ' << image_height << "\n";
     cout << "255\n";
     
-    for (int i = 0; i < image_height; i++) {
-        clog << "\r Scanlines remaining: " << image_height - i << "\n" << flush;
-        for (int j = 0; j < image_width; j++) {
-            Point pixel_center = viewport_origin + (j * pixel_delta_u) + (i * pixel_delta_v);
+    for (int j = 0; j < image_height; j++) {
+        for (int i = 0; i < image_width; i++) {
+            Point pixel_center = viewport_origin + (i * pixel_delta_u) + (j * pixel_delta_v);
             Vec3 ray_direction = pixel_center - camera_center;
             Ray ray = Ray(pixel_center, ray_direction);
             Color pixel_color = ray_color(ray);
