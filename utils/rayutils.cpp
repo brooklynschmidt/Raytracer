@@ -6,7 +6,7 @@
 Color ray_color(const Ray& r) {
     auto t = hit_sphere(Point(0, 0, -1), 0.5, r);
     if (t > 0.0) {
-        Vec3 N = unit(r.at(t) - Vec3(0, 0, 1)); 
+        Vec3 N = unit(r.at(t) - Vec3(0, 0, -1)); 
         return 0.5 * Color(N.x() + 1, N.y() + 1, N.z() + 1);
     }
 
@@ -37,6 +37,6 @@ double hit_sphere(const Point& center, double radius, const Ray& r) {
     if (discriminant < 0) {
         return -1.0;
     } else {
-        return (h + std::sqrt(discriminant)) / a;
+        return (h - std::sqrt(discriminant)) / a;
     }
 }

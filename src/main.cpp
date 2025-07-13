@@ -39,7 +39,7 @@ int main() {
         for (int i = 0; i < image_width; i++) {
             Point pixel_center = viewport_origin + (i * pixel_delta_u) + (j * pixel_delta_v);
             Vec3 ray_direction = pixel_center - camera_center;
-            Ray ray = Ray(pixel_center, ray_direction);
+            Ray ray = Ray(camera_center, ray_direction);
             Color pixel_color = ray_color(ray);
             write_color(std::cout, pixel_color);
         } 
