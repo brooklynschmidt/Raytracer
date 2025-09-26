@@ -1,9 +1,7 @@
 #ifndef TYPED_VEC3
 #define TYPED_VEC3
 
-#include <glm/glm.hpp>
-#include <iostream>
-#include <type_traits>
+#include <raytracer.h>
 
 template <typename Tag>
 
@@ -20,31 +18,31 @@ class TypedVec3 {
         float z() const { return value.z; }
 
         glm::vec3& val() { return value; }
-        const glm::vec3& val() const { return value; }
+        inline const glm::vec3& val() const { return value; }
 
-        TypedVec3& operator-() { return TypedVec3(-value.x, -value.y, -value.z); }
+        inline TypedVec3& operator-() { return TypedVec3(-value.x, -value.y, -value.z); }
 
-        TypedVec3& operator+=(const TypedVec3& other) {
+        inline TypedVec3& operator+=(const TypedVec3& other) {
             value += other.value;
             return *this;
         }
 
-        TypedVec3& operator-=(const TypedVec3& other) {
+        inline TypedVec3& operator-=(const TypedVec3& other) {
             value -= other.value;
             return *this;
         }
 
-        TypedVec3& operator*=(float scalar) {
+        inline TypedVec3& operator*=(float scalar) {
             value *= scalar;
             return *this;
         } 
 
-        TypedVec3& operator/=(float scalar) {
+        inline TypedVec3& operator/=(float scalar) {
             value /= scalar;
             return *this;
         }
 
-        float magnitude() const {
+        inline float magnitude() const {
             return glm::length(value);
         }
 
@@ -61,37 +59,37 @@ using Vec3 = TypedVec3<Vec3Tag>;
 // TypedVec3 Functions
 
 template <typename Tag>
-std::ostream& operator<<(std::ostream& out, const TypedVec3<Tag>& v) {
+inline std::ostream& operator<<(std::ostream& out, const TypedVec3<Tag>& v) {
     return out << v.x() << ' ' << v.y() << ' ' << v.z();
 }
 
 template <typename Tag>
-TypedVec3<Tag> operator+(const TypedVec3<Tag>& a, const TypedVec3<Tag>& b) {
+inline TypedVec3<Tag> operator+(const TypedVec3<Tag>& a, const TypedVec3<Tag>& b) {
     return TypedVec3<Tag>(a.val() + b.val());
 }
 
 template <typename Tag>
-TypedVec3<Tag> operator-(const TypedVec3<Tag>& a, const TypedVec3<Tag>& b) {
+inline TypedVec3<Tag> operator-(const TypedVec3<Tag>& a, const TypedVec3<Tag>& b) {
     return TypedVec3<Tag>(a.val() - b.val());
 }
 
 template <typename Tag>
-TypedVec3<Tag> operator*(const TypedVec3<Tag>& a, const TypedVec3<Tag>* b) {
+inline TypedVec3<Tag> operator*(const TypedVec3<Tag>& a, const TypedVec3<Tag>* b) {
     return TypedVec3<Tag>(a.val() * b.val());
 }
 
 template <typename Tag>
-TypedVec3<Tag> operator*(const TypedVec3<Tag>& a, const float scalar) {
+inline TypedVec3<Tag> operator*(const TypedVec3<Tag>& a, const float scalar) {
     return TypedVec3<Tag>(a.val() * scalar);
 }
 
 template <typename Tag>
-TypedVec3<Tag> operator*(const float scalar, const TypedVec3<Tag>& a) {
+inline TypedVec3<Tag> operator*(const float scalar, const TypedVec3<Tag>& a) {
     return a * scalar;
 }
 
 template <typename Tag>
-TypedVec3<Tag> operator/(const TypedVec3<Tag>& a, const float scalar) {
+inline TypedVec3<Tag> operator/(const TypedVec3<Tag>& a, const float scalar) {
     return TypedVec3<Tag>(a.val() / scalar);
 }
 
@@ -135,6 +133,15 @@ inline Vec3 operator-(const Point& a, const Point& b) {
 // Convert Point to normalized Vec3
 inline Vec3 unit(const Point& p) {
     return Vec3(glm::normalize(p.val()));
+}
+
+// Color Map Functionality
+inline Color operator+(const Vec3& a, const Color& b) {
+    return Color(a.val() + b.val());
+}
+
+inline Color operator+(const Color&a, Vec3&b) {
+    return b + a;
 }
 
 #endif

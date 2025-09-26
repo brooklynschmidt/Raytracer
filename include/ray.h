@@ -1,7 +1,7 @@
 #ifndef RAY_H
 #define RAY_H
 
-#include <typed_vec3.h>
+#include <raytracer.h>
 
 class Ray {
     public:
@@ -11,7 +11,7 @@ class Ray {
         const Point& origin() const { return orig; }
         const Vec3& direction() const { return dir; }
 
-        Point at(double t) const { 
+        inline Point at(double t) const { 
             return orig + t*dir;
         }
 

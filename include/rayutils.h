@@ -1,10 +1,13 @@
 #ifndef RAYUTILS_H
 #define RAYUTILS_H
 
-#include <typed_vec3.h>
-#include <ray.h>
+#include <raytracer.h>
+#include <hittable.h>
+#include <string>
+#include <mathutils.h>
+#include <interval.h>
 
-Color ray_color(const Ray& r);
+Color ray_color(const Ray& r, const hittable& world);
 
 void write_color(std::ostream& out, const Color& pixel_color);
 

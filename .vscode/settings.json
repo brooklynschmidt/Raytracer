@@ -63,5 +63,6 @@
         "xloctime": "cpp",
         "xmemory": "cpp",
         "xstring": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "C:/Users/brooklyn/OneDrive/Documents/GitHub/Raytracer-1/thirdparty/glm"
 }
