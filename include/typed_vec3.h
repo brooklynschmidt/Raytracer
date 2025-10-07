@@ -20,7 +20,7 @@ class TypedVec3 {
         glm::vec3& val() { return value; }
         inline const glm::vec3& val() const { return value; }
 
-        inline TypedVec3& operator-() { return TypedVec3(-value.x, -value.y, -value.z); }
+        inline TypedVec3 operator-() { return TypedVec3(-value.x, -value.y, -value.z); }
 
         inline TypedVec3& operator+=(const TypedVec3& other) {
             value += other.value;
@@ -105,6 +105,44 @@ inline Vec3 cross(const Vec3& a, const Vec3& b) {
 
 inline Vec3 unit(const Vec3& v) {
     return Vec3(glm::normalize(v.val()));
+}
+
+// Random Vecs
+inline double random_double() {
+    // returns a random real [0, 1)
+    return std::rand() / (RAND_MAX + 1.0);
+}
+
+inline double random_double(double min, double max) {
+    // returns a random real [min, max)
+    return min + (max-min)*random_double();
+}
+
+static Vec3 random_vec() {
+    return Vec3(random_double(), random_double(), random_double());
+}
+
+static Vec3 random_vec(double min, double max) {
+    return Vec3(random_double(min, max), random_double(min, max), random_double(min, max));
+}
+
+inline Vec3 random_unit_vector() {
+    while (true) {
+        auto p = random_vec(-1, 1);
+        auto lensq = p.magnitude() * p.magnitude();
+        if (1e-160 < lensq && lensq <= 1) {
+            return p / sqrt(lensq);
+        }
+    }
+}
+
+inline Vec3 random_on_hemisphere(const Vec3& normal) {
+    Vec3 on_unit_sphere = random_unit_vector();
+    if (dot(on_unit_sphere, normal) > 0.0) { // same hemisphere as normal
+        return on_unit_sphere;
+    } else {
+        return -on_unit_sphere;
+    }
 }
 
 // Ray Arithmetic Functions
