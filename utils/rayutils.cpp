@@ -11,7 +11,10 @@ Color ray_color(const Ray& r, const int rayCount, const hittable& world) {
     Gets rid of shadow acne
     */
     if (world.hit(r, Interval(0.001, infinity), rec)) {
-        Vec3 direction = random_on_hemisphere(rec.normal);
+        /* We add a random unit vector to the surface normal to bias the direction towards the normal
+        This produces an effect similar to Lambertian distribution with cosine weights
+         */
+        Vec3 direction = rec.normal + random_unit_vector();
         return 0.5 * ray_color(Ray(rec.p, direction), rayCount - 1, world);
     }
 
