@@ -51,7 +51,7 @@ void Camera::render(const hittable& world) {
             Color pixel_color(0,0,0);
             for (int sample = 0; sample < this->samples_per_pixel; sample++) {
                 Ray r = create_camera_ray(i, j);
-                pixel_color += ray_color(r, world);
+                pixel_color += ray_color(r, max_ray_count, world);
             }
             write_color(std::cout, this->pixel_samples_scale * pixel_color);
         }

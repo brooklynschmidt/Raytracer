@@ -23,6 +23,10 @@ class Camera {
             this->samples_per_pixel = count;
         }
 
+        inline void setMaxRays(const int max) {
+            this->max_ray_count = max;
+        }
+
     private:
         
         // Fields
@@ -35,6 +39,9 @@ class Camera {
         Vec3 pixel_delta_v;
         int samples_per_pixel;
         double pixel_samples_scale; // Color scale factor for a sum of pixel samples
+
+        // This variable prevents stack blowout from recursive calls in the ray_color function. 
+        int max_ray_count; // Max number of rays that bounce in the scene
 
         void initialize();
         Vec3 sample_square() const;

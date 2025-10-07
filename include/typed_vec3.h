@@ -5,6 +5,10 @@
 
 template <typename Tag>
 
+/* This class represents 3 different types of 3D vectors
+Different definitions and functions are provided for each type, as shown with the template "Tag"
+Represents a Point, 3D Vector, or a Color */
+
 class TypedVec3 {
     public:
         glm::vec3 value;
@@ -108,6 +112,9 @@ inline Vec3 unit(const Vec3& v) {
 }
 
 // Random Vecs
+/* These helper functions are used to produce arbitrary random vectors 
+These vectors are used because light that reflects off diffuse surfaces has its direction randomized.
+*/
 inline double random_double() {
     // returns a random real [0, 1)
     return std::rand() / (RAND_MAX + 1.0);

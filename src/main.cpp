@@ -22,6 +22,7 @@ int main() {
     cam.setAspectRatio(ratio);
     cam.setImageWidth(WIDTH);
     cam.setSampleCount(SAMPLES);
+    cam.setMaxRays(10);
     cam.render(world);
 
 }

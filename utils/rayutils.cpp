@@ -1,10 +1,18 @@
 #include <rayutils.h>
 
-Color ray_color(const Ray& r, const hittable& world) {
+Color ray_color(const Ray& r, const int rayCount, const hittable& world) {
+    if (rayCount <= 0) {
+        return Color(0, 0, 0); // no light contribution when we have no more rays!
+    }
+    
     hit_record rec;
-    if (world.hit(r, Interval(0, infinity), rec)) {
+    /* Susceptible to floating point rounding errors
+    0.001 is chosen to ignore hits very close to the calculated intersection point 
+    Gets rid of shadow acne
+    */
+    if (world.hit(r, Interval(0.001, infinity), rec)) {
         Vec3 direction = random_on_hemisphere(rec.normal);
-        return 0.5 * ray_color(Ray(rec.p, direction), world);
+        return 0.5 * ray_color(Ray(rec.p, direction), rayCount - 1, world);
     }
 
     Vec3 unit_direction = unit(r.direction());
