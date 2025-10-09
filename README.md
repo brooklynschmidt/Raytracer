@@ -3,6 +3,10 @@
 # How to Build
 
 # Feature List
+- Antialiasing -> Very simple sampling algorithm
+- Diffuse Materials -> Lambertian Reflection
+- Gamma Correction
+- No Shadow Acne 
 
 # References
 My rendition of: 

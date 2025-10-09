@@ -4,10 +4,13 @@
 #include <raytracer.h>
 #include <interval.h>
 
+class Material;
+
 class hit_record {
   public:
     Point p;
     Vec3 normal;
+    shared_ptr<Material> mat;
     double t;
     bool front_face;
 

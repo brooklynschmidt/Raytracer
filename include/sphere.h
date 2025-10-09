@@ -7,13 +7,16 @@
 
 class Sphere : public hittable {
   public:
-    Sphere(const Point& center, double radius) : center(center), radius(std::fmax(0,radius)) {}
+    Sphere(const Point& center, double radius) : center(center), radius(std::fmax(0,radius)) {
+      // Initialize the Material Pointer
+    }
 
     bool hit(const Ray& r, Interval ray_t, hit_record& rec) const override;
 
   private:
     Point center;
     double radius;
+    shared_ptr<Material> mat;
 };
 
 #endif

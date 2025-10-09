@@ -152,6 +152,12 @@ inline Vec3 random_on_hemisphere(const Vec3& normal) {
     }
 }
 
+// Returns true if the vector is very close to 0 in all dimensions
+inline bool near_zero(Vec3 value) {
+    auto s = 1e-8;
+    return (std::fabs(value.x()) < s) && (std::fabs(value.y()) < s) && (std::fabs(value.z()) < s);
+}
+
 // Ray Arithmetic Functions
 
 inline Point operator+(const Point& origin, const Vec3& direction) {
