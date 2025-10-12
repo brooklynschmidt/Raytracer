@@ -1,4 +1,5 @@
 #include <rayutils.h>
+#include <material.h>
 
 Color ray_color(const Ray& r, const int rayCount, const hittable& world) {
     if (rayCount <= 0) {
@@ -14,6 +15,13 @@ Color ray_color(const Ray& r, const int rayCount, const hittable& world) {
         /* We add a random unit vector to the surface normal to bias the direction towards the normal
         This produces an effect similar to Lambertian distribution with cosine weights
          */
+        Ray scattered;
+        Color attenuation;
+        if (rec.mat->scatter(r, rec, attenuation, scattered)) {
+            return attenuation * ray_color(scattered, rayCount-1, world);
+        } else {
+            return Color(0, 0, 0);
+        }
         Vec3 direction = rec.normal + random_unit_vector();
         return 0.5 * ray_color(Ray(rec.p, direction), rayCount - 1, world);
     }

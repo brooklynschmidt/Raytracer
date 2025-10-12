@@ -78,7 +78,7 @@ inline TypedVec3<Tag> operator-(const TypedVec3<Tag>& a, const TypedVec3<Tag>& b
 }
 
 template <typename Tag>
-inline TypedVec3<Tag> operator*(const TypedVec3<Tag>& a, const TypedVec3<Tag>* b) {
+inline TypedVec3<Tag> operator*(TypedVec3<Tag> a, TypedVec3<Tag> b) {
     return TypedVec3<Tag>(a.val() * b.val());
 }
 
@@ -143,19 +143,13 @@ inline Vec3 random_unit_vector() {
     }
 }
 
-inline Vec3 random_on_hemisphere(const Vec3& normal) {
-    Vec3 on_unit_sphere = random_unit_vector();
-    if (dot(on_unit_sphere, normal) > 0.0) { // same hemisphere as normal
-        return on_unit_sphere;
-    } else {
-        return -on_unit_sphere;
-    }
+inline Vec3 reflect(const Vec3& v, const Vec3& n) {
+    return v - 2*dot(v,n)*n;
 }
 
-// Returns true if the vector is very close to 0 in all dimensions
-inline bool near_zero(Vec3 value) {
+inline bool near_zero(Vec3 v) {
     auto s = 1e-8;
-    return (std::fabs(value.x()) < s) && (std::fabs(value.y()) < s) && (std::fabs(value.z()) < s);
+    return (std::fabs(v.x()) < s) && (std::fabs(v.y()) < s) && (std::fabs(v.z()) < s);
 }
 
 // Ray Arithmetic Functions

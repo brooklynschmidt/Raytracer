@@ -21,21 +21,30 @@ class Lambertian : public Material {
         Lambertian(const Color& albedo) : albedo(albedo) {}
 
         bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const override {
-            auto scatter_direction = rec.normal + random_unit_vector();
-
-            /* 
-            Prevents the case where random_unit_vector is the exact opposite of rec.normal
-            This would lead to a zero vector and NaN / infinity bugs
-            */
-            if (near_zero(scatter_direction)) {
-                scatter_direction = rec.normal;
+            auto scatterDirection = rec.normal + random_unit_vector();
+            // Accounts for case where random unit vector is the exact opposite of the normal
+            if (near_zero(scatterDirection)) {
+                scatterDirection = rec.normal;
             }
-            
-            scattered = Ray(rec.p, scatter_direction);
+            scattered = Ray(rec.p, scatterDirection);
             attenuation = albedo;
             return true;
         }
 
+    private:
+        Color albedo;
+};
+
+class Metal : public Material {
+    public:
+        Metal(const Color& albedo) : albedo(albedo) {}
+
+        bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const override {
+            Vec3 reflected = reflect(r_in.direction(), rec.normal);
+            scattered = Ray(rec.p, reflected);
+            attenuation = albedo;
+            return true;
+        }
     private:
         Color albedo;
 };
