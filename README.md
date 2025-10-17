@@ -7,6 +7,12 @@
 - Diffuse Materials -> Lambertian Reflection
 - Gamma Correction
 - No Shadow Acne 
+- Fuzzy Reflection
+- Metal & Lambertian Materials
+- Light Scatter & Reflectance
+- Schlick Approximation for Reflectivity
+- Dielectrics & Refraction
+- Total Internal Reflection
 
 # References
 My rendition of: 

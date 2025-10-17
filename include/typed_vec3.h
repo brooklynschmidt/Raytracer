@@ -147,6 +147,14 @@ inline Vec3 reflect(const Vec3& v, const Vec3& n) {
     return v - 2*dot(v,n)*n;
 }
 
+inline Vec3 refract(Vec3& uv, const Vec3& n, double etai_over_etat) {
+    auto cos_theta = std::fmin(dot(-uv, n), 1.0);
+    Vec3 r_out_perp = etai_over_etat * (uv + cos_theta * n);
+    auto perp_squared = r_out_perp.magnitude() * r_out_perp.magnitude();
+    Vec3 r_out_parallel = -std::sqrt(std::fabs(1.0 - perp_squared)) * n;
+    return r_out_perp + r_out_parallel;
+}
+
 inline bool near_zero(Vec3 v) {
     auto s = 1e-8;
     return (std::fabs(v.x()) < s) && (std::fabs(v.y()) < s) && (std::fabs(v.z()) < s);
