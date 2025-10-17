@@ -24,9 +24,11 @@ void Camera::initialize() {
     // Camera
     this->camera_center = Point(0, 0, 0);
     double focal_length = 1.0;
+    auto theta = degrees_to_radians(vfov);
+    auto h = std::tan(theta / 2);
 
     // Viewport
-    double viewport_height = 2.0;
+    double viewport_height = 2.0 * h * focal_length;
     double viewport_width = viewport_height * (double(this->image_width) / this->image_height);
     Vec3 viewport_u = Vec3(viewport_width, 0, 0);
     Vec3 viewport_v = Vec3(0, -viewport_height, 0);

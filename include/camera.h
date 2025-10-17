@@ -27,6 +27,10 @@ class Camera {
             this->max_ray_count = max;
         }
 
+        inline void setCameraVFov(const double fov) {
+            this->vfov = fov;
+        }
+
     private:
         
         // Fields
@@ -39,6 +43,7 @@ class Camera {
         Vec3 pixel_delta_v;
         int samples_per_pixel;
         double pixel_samples_scale; // Color scale factor for a sum of pixel samples
+        double vfov = 90; // Vertical View Angle (FOV)
 
         // This variable prevents stack blowout from recursive calls in the ray_color function. 
         int max_ray_count; // Max number of rays that bounce in the scene
