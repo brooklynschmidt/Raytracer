@@ -5,8 +5,8 @@
 #include <camera.h>
 #include <material.h>
 
-#define WIDTH 445
-#define SAMPLES 100
+#define WIDTH 400
+#define SAMPLES 10
 
 using namespace std;
 
