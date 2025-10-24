@@ -3,8 +3,8 @@
 # How to Build
 
 # Feature List
-- Antialiasing -> Very simple sampling algorithm
-- Diffuse Materials -> Lambertian Reflection
+- Antialiasing w/ simple sampling algorithm
+- Diffuse Materials w/ Lambertian Reflection
 - Gamma Correction
 - No Shadow Acne 
 - Fuzzy Reflection
@@ -13,6 +13,8 @@
 - Schlick Approximation for Reflectivity
 - Dielectrics & Refraction
 - Total Internal Reflection
+- Adjustable Camera FOV and Position
+- Defocus Blur
 
 # References
 My rendition of: 

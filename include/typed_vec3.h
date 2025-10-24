@@ -143,6 +143,16 @@ inline Vec3 random_unit_vector() {
     }
 }
 
+// Random points on the defocus disk
+inline Vec3 random_in_unit_disk() {
+    while (true) {
+        auto p = Vec3(random_double(-1, 1), random_double(-1, 1), 0);
+        if ((p.magnitude() * p.magnitude()) < 1) {
+            return p;
+        }
+    }
+}
+
 inline Vec3 reflect(const Vec3& v, const Vec3& n) {
     return v - 2*dot(v,n)*n;
 }
@@ -196,5 +206,14 @@ inline Color operator+(const Vec3& a, const Color& b) {
 inline Color operator+(const Color&a, Vec3&b) {
     return b + a;
 }
+
+inline Color random_color() {
+    return Color(random_double(), random_double(), random_double());
+}
+
+inline Color random_color(double min, double max) {
+    return Color(random_double(min, max), random_double(min, max), random_double(min, max));
+}
+
 
 #endif

@@ -31,9 +31,28 @@ class Camera {
             this->vfov = fov;
         }
 
+        inline void setLookFrom(const Point lookFrom) {
+            this->lookFrom = lookFrom;
+        }
+
+        inline void setLookAt(const Point lookAt) {
+            this->lookAt = lookAt;
+        }
+
+        inline void setVup(const Vec3 vup) {
+            this->vup = vup;
+        }
+
+        inline void setDefocusAngle(const double angle) {
+            this->defocus_angle = angle;
+        }
+
+        inline void setFocusDist(double dist) {
+            this->focus_dist = dist;
+        }
+
     private:
         
-        // Fields
         double aspect_ratio;
         int image_width;
         int image_height;
@@ -43,7 +62,16 @@ class Camera {
         Vec3 pixel_delta_v;
         int samples_per_pixel;
         double pixel_samples_scale; // Color scale factor for a sum of pixel samples
-        double vfov = 90; // Vertical View Angle (FOV)
+        double vfov; // Vertical View Angle (FOV)
+        Point lookFrom;
+        Point lookAt;
+        Vec3 vup; // Relative up direction
+        double defocus_angle; // Variation angle of rays through each pixel
+        double focus_dist; // distance between camera lookfrom to plane of perfect focus
+        Vec3 defocus_disk_u; // Defocus disk horizontal radius
+        Vec3 defocus_disk_v; // Defocus disk vertial radius
+
+        Vec3 u, v, w; 
 
         // This variable prevents stack blowout from recursive calls in the ray_color function. 
         int max_ray_count; // Max number of rays that bounce in the scene
@@ -53,6 +81,8 @@ class Camera {
 
         // Construct Camera Ray starting from origin, directed at randomly sampled point around pixel (i, j)
         Ray create_camera_ray(int i, int j);
+
+        Point defocus_disk_sample();
 };
 
 #endif
