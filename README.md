@@ -2,8 +2,7 @@
 
 # How to Build
 In the same directory as the make file:
-```make ```
-``` ./main > [title_of_image].ppm ```
+```make``` then ``` ./main > [title_of_image].ppm ```
 
 # Feature List
 - Antialiasing w/ simple sampling algorithm
