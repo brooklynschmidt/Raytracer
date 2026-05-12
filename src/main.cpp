@@ -30,7 +30,8 @@ int main() {
                     // Diffuse
                     auto albedo = random_color() * random_color();
                     sphere_material = make_shared<Lambertian>(albedo);
-                    world.add(make_shared<Sphere>(center, 0.2, sphere_material));
+                    auto center2 = center + Vec3(0, random_double(0, 0.5), 0);
+                    world.add(make_shared<Sphere>(center, center2, 0.2, sphere_material));
                 } else if (choose_mat < 0.95) {
                     // Metal
                     auto albedo = random_color(0.5, 1);

@@ -17,8 +17,10 @@ Ray Camera::create_camera_ray(int i, int j) {
     auto pixel_sample = this->viewport_origin + ((i + offset.x()) * this->pixel_delta_u) + ((j + offset.y()) * pixel_delta_v);
     auto ray_origin = (this->defocus_angle <= 0) ? this->camera_center : defocus_disk_sample();
     auto ray_direction = pixel_sample - ray_origin;
+    auto ray_time = random_double();
 
-    return Ray(ray_origin, ray_direction);
+    // Generate rays at a random instant between 0 and 1 frames. 
+    return Ray(ray_origin, ray_direction, ray_time);
 }
 
 void Camera::initialize() {
