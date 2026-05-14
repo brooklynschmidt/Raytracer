@@ -4,6 +4,7 @@
 #include <hittable.h>
 #include <vector>
 #include <interval.h>
+#include "aabb.h"
 
 using std::make_shared;
 using std::shared_ptr;
@@ -19,9 +20,15 @@ class hittable_list : public hittable {
 
         inline void add(shared_ptr<hittable> object) {
             objects.push_back(object);
+            bbox = AxisAlignedBoundingBox(bbox, object->bounding_box());
         }
 
         bool hit(const Ray&r, Interval ray_t, hit_record& rec) const override;
-    };
+
+        AxisAlignedBoundingBox bounding_box() const override { return bbox; }
+
+    private:
+        AxisAlignedBoundingBox bbox;
+};  
 
 #endif
