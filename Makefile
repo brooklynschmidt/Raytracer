@@ -1,6 +1,7 @@
 # Compiler
 CXX := g++
-CXXFLAGS := -g -std=c++17 -D LINUX
+CXXFLAGS := -g -std=c++17 -D LINUX -fsanitize=address
+LDFLAGS := -fsanitize=address
 
 # Includes
 INCLUDES := -I./thirdparty/glm -I./include
@@ -17,7 +18,7 @@ all: $(TARGET)
 
 # Link
 $(TARGET): $(OBJ)
-	$(CXX) $(CXXFLAGS) $(OBJ) -o $(TARGET) $(INCLUDES)
+	$(CXX) $(CXXFLAGS) $(OBJ) -o $(TARGET) $(INCLUDES) $(LDFLAGS)
 
 # Compile
 %.o: %.cpp

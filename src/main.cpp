@@ -4,6 +4,7 @@
 #include <rayutils.h>
 #include <camera.h>
 #include <material.h>
+#include "bvh.h"
 
 #define WIDTH 400
 #define SAMPLES 10
@@ -55,6 +56,8 @@ int main() {
 
     auto material3 = make_shared<Metal>(Color(0.7, 0.6, 0.5), 0.0);
     world.add(make_shared<Sphere>(Point(4, 1, 0), 1.0, material3));
+
+    world = hittable_list(make_shared<BVH_Node>(world));
 
     // Camera
     Camera cam; 
