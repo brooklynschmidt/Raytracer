@@ -4,7 +4,6 @@
 #include <hittable.h>
 #include <vector>
 #include <interval.h>
-#include "aabb.h"
 
 using std::make_shared;
 using std::shared_ptr;

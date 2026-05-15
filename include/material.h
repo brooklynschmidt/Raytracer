@@ -2,6 +2,7 @@
 #define MATERIAL_H
 
 #include <hittable.h>
+#include <texture.h>
 
 
 // Abstract Material Class to encapsulate unique behaviors and materials
@@ -18,7 +19,8 @@ class Material {
 // We choose to always scatter and attenuate light according to its reflectance
 class Lambertian : public Material {
     public: 
-        Lambertian(const Color& albedo) : albedo(albedo) {}
+        Lambertian(const Color& albedo) : tex(make_shared<SolidColor>(albedo)) {}
+        Lambertian(shared_ptr<Texture> tex) : tex(tex) {}
 
         bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const override {
             auto scatterDirection = rec.normal + random_unit_vector();
@@ -28,12 +30,12 @@ class Lambertian : public Material {
             }
 
             scattered = Ray(rec.p, scatterDirection, r_in.getTime());
-            attenuation = albedo;
+            attenuation = tex->value(rec.u, rec.v, rec.p);
             return true;
         }
 
     private:
-        Color albedo;
+        shared_ptr<Texture> tex;
 };
 
 class Metal : public Material {
