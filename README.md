@@ -2,7 +2,10 @@
 
 # How to Build
 In the same directory as the make file:
-```make``` then ``` ./main > [title_of_image].ppm ```
+```make``` then ``` ./main [integer] > [title_of_image].ppm ```
+
+1. Moving spheres
+2. Checkered Spheres
 
 # Feature List
 - Antialiasing w/ simple sampling algorithm
@@ -18,6 +21,8 @@ In the same directory as the make file:
 - Adjustable Camera FOV and Position
 - Defocus Blur
 - Motion Blur
+- Bounding Volume Hierarchies Optimization
+- Texture Mapping
 
 # References
 My rendition of: 
