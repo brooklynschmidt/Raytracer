@@ -11,7 +11,7 @@
 
 using namespace std;
 
-int main() {
+void bouncing_spheres() {
 
     // World
     hittable_list world;
@@ -74,4 +74,40 @@ int main() {
     cam.setFocusDist(10.0);
     cam.render(world);
 
+}
+
+void checkered_spheres() {
+    hittable_list world;
+
+    auto checker = make_shared<CheckerTexture>(0.32, Color(0.2, 0.3, 0.1), Color(0.9, 0.9, 0.9));
+
+    world.add(make_shared<Sphere>(Point(0, -10, 0), 10, make_shared<Lambertian>(checker)));
+    world.add(make_shared<Sphere>(Point(0, 10, 0), 10, make_shared<Lambertian>(checker)));
+
+    Camera cam;
+    double ratio = 16.0 / 9.0;
+    cam.setAspectRatio(ratio);
+    cam.setImageWidth(WIDTH);
+    cam.setSampleCount(10);
+    cam.setMaxRays(50);
+    cam.setCameraVFov(20);
+    cam.setLookFrom(Point(13, 2, 3));
+    cam.setLookAt(Point(0, 0, 0));
+    cam.setVup(Vec3(0, 1, 0));
+    cam.setDefocusAngle(0.6);
+    cam.setFocusDist(10.0);
+
+    cam.render(world);
+}
+
+int main(int argc, char* argv[]) {
+    if (argc <= 1) {
+        std::cout << "Proper usage: ./main [int] > [file_name].ppm" << endl;
+        exit(1);
+    }
+    switch (argv[1][0]) {
+        case '1': bouncing_spheres(); break;
+        case '2': checkered_spheres(); break;
+        default: std::cout << "Couldn't render image, wrong input?" << endl;
+    }
 }
