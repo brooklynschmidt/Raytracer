@@ -6,7 +6,6 @@
     #pragma warning (push, 0)
 #endif
 
-#define STB_IMAGE_IMPLEMENTATION
 #define STBI_FAILURE_USERMSG
 #include "stb_image.h"
 
@@ -27,7 +26,7 @@ class RTW_Image {
 
         ~RTW_Image() {
             delete[] bdata;
-            STBI_FREE(fdata);
+            stbi_image_free(fdata);
         }
 
         bool load(const std::string& filename) {
