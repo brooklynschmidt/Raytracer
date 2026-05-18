@@ -74,7 +74,7 @@ class NoiseTexture : public Texture {
     public:
         NoiseTexture(double scale) : scale(scale) {}
         Color value(double u, double v, const Point& p) const override {
-            return Color(1, 1, 1) * noise.noise(scale * p);
+            return Color(1, 1, 1) * noise.turbulence(p, 7);
         }
 
     private:
