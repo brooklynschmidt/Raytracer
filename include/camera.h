@@ -51,6 +51,10 @@ class Camera {
             this->focus_dist = dist;
         }
 
+        inline void setBackgroundColor(Color c) {
+            this->background = c;
+        }
+
     private:
         
         double aspect_ratio;
@@ -75,6 +79,8 @@ class Camera {
 
         // This variable prevents stack blowout from recursive calls in the ray_color function. 
         int max_ray_count; // Max number of rays that bounce in the scene
+
+        Color background; // Scene background color
 
         void initialize();
         Vec3 sample_square() const;

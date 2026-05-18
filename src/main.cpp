@@ -74,6 +74,7 @@ void bouncing_spheres() {
     cam.setVup(Vec3(0, 1, 0));
     cam.setDefocusAngle(0.6);
     cam.setFocusDist(10.0);
+    cam.setBackgroundColor(Color(0.7, 0.8,  1.0));
     cam.render(world);
 
 }
@@ -98,6 +99,7 @@ void checkered_spheres() {
     cam.setVup(Vec3(0, 1, 0));
     cam.setDefocusAngle(0.6);
     cam.setFocusDist(10.0);
+    cam.setBackgroundColor(Color(0.7, 0.8,  1.0));
 
     cam.render(world);
 }
@@ -119,6 +121,8 @@ void earth() {
     cam.setVup(Vec3(0, 1, 0));
     cam.setDefocusAngle(0.6);
     cam.setFocusDist(10.0);
+    cam.setBackgroundColor(Color(0.7, 0.8,  1.0));
+
     cam.render(hittable_list(globe));
 }
 
@@ -141,6 +145,8 @@ void perlin_spheres() {
     cam.setVup(Vec3(0, 1, 0));
     cam.setDefocusAngle(0.6);
     cam.setFocusDist(10.0);
+    cam.setBackgroundColor(Color(0.7, 0.8,  1.0));
+
 
     cam.render(world);
 }
@@ -173,9 +179,38 @@ void quads() {
     cam.setVup(Vec3(0, 1, 0));
     cam.setDefocusAngle(0.6);
     cam.setFocusDist(10.0);
+    cam.setBackgroundColor(Color(0.7, 0.8,  1.0));
 
     cam.render(world);
 
+}
+
+void simple_light() {
+    hittable_list world;
+
+    auto pertext = make_shared<NoiseTexture>(4);
+    world.add(make_shared<Sphere>(Point(0, -1000, 0), 1000, make_shared<Lambertian>(pertext)));
+    world.add(make_shared<Sphere>(Point(0, 2, 0), 2, make_shared<Lambertian>(pertext)));
+
+    auto difflight = make_shared<DiffuseLight>(Color(4, 4, 4));
+    world.add(make_shared<Sphere>(Point(0, 7, 0), 2, difflight));
+    world.add(make_shared<Quad>(Point(3, 1, -2), Vec3(2, 0, 0), Vec3(0, 2, 0), difflight));
+
+    Camera cam;
+    auto ratio = 16.0 / 9.0;
+    cam.setAspectRatio(ratio);
+    cam.setImageWidth(WIDTH);
+    cam.setSampleCount(10);
+    cam.setMaxRays(50);
+    cam.setCameraVFov(20);
+    cam.setLookFrom(Point(26, 3, 6));
+    cam.setLookAt(Point(0, 2, 0));
+    cam.setVup(Vec3(0, 1, 0));
+    cam.setDefocusAngle(0.6);
+    cam.setFocusDist(10.0);
+    cam.setBackgroundColor(Color(0, 0, 0));
+
+    cam.render(world);
 }
 
 int main(int argc, char* argv[]) {
@@ -189,6 +224,7 @@ int main(int argc, char* argv[]) {
         case '3': earth(); break;
         case '4': perlin_spheres(); break;
         case '5': quads(); break;
+        case '6': simple_light(); break;
         default: std::cout << "Couldn't render image, wrong input?" << endl;
     }
 }

@@ -1,35 +1,28 @@
 #include <rayutils.h>
 #include <material.h>
 
-// only need this one, maybe we can outsource it to ray.h?
-Color ray_color(const Ray& r, const int rayCount, const hittable& world) {
+Color ray_color(const Ray& r, const int rayCount, const hittable& world, Color background) {
     if (rayCount <= 0) {
         return Color(0, 0, 0); // no light contribution when we have no more rays!
     }
     
     hit_record rec;
-    /* Susceptible to floating point rounding errors
-    0.001 is chosen to ignore hits very close to the calculated intersection point 
-    Gets rid of shadow acne
-    */
-    if (world.hit(r, Interval(0.001, infinity), rec)) {
-        /* We add a random unit vector to the surface normal to bias the direction towards the normal
-        This produces an effect similar to Lambertian distribution with cosine weights
-         */
-        Ray scattered;
-        Color attenuation;
-        if (rec.mat->scatter(r, rec, attenuation, scattered)) {
-            return attenuation * ray_color(scattered, rayCount-1, world);
-        } else {
-            return Color(0, 0, 0);
-        }
-        Vec3 direction = rec.normal + random_unit_vector();
-        return 0.5 * ray_color(Ray(rec.p, direction), rayCount - 1, world);
+
+    if (!world.hit(r, Interval(0.001, infinity), rec)) {
+        return background;
     }
 
-    Vec3 unit_direction = unit(r.direction());
-    double lerp = 0.5 * (unit_direction.y() + 1.0);
-    return (1.0 - lerp) * Color(1.0, 1.0, 1.0) + lerp * Color(0.5, 0.7, 1.0);
+    Ray scattered;
+    Color attenuation;
+    Color color_from_emission = rec.mat->emitted(rec.u, rec.v, rec.p);
+
+    if (!rec.mat->scatter(r, rec, attenuation, scattered)) {
+        return color_from_emission;
+    }
+
+    Color color_from_scatter = attenuation * ray_color(scattered, rayCount - 1, world, background);
+
+    return color_from_emission + color_from_scatter;
 }
 
 /* This function transforms our data into gamma space from linear space.

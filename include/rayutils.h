@@ -7,7 +7,7 @@
 #include <mathutils.h>
 #include <interval.h>
 
-Color ray_color(const Ray& r, const int rayCount, const hittable& world);
+Color ray_color(const Ray& r, const int rayCount, const hittable& world, Color background);
 
 void write_color(std::ostream& out, const Color& pixel_color);
 

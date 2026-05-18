@@ -9,6 +9,10 @@
 class Material {
     public:
         virtual ~Material() = default;
+
+        virtual Color emitted(double u, double v, const Point& p) const {
+            return Color(0, 0, 0);
+        }
         
         // We choose hit_record so we can encapsulate arguments and send them as a group
         virtual bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const {
@@ -96,6 +100,18 @@ class Dielectric : public Material {
             r0 = r0 * r0;
             return r0 + (1 - r0) * std::pow((1- cosine), 5);
         }
+};
+
+class DiffuseLight : public Material {
+    public:
+        DiffuseLight(shared_ptr<Texture> tex) : tex(tex) {}
+        DiffuseLight(const Color& emit) : tex(make_shared<SolidColor>(emit)) {}
+
+        Color emitted(double u, double v, const Point& p) const override {
+            return tex->value(u, v, p);
+        }
+    private:
+        shared_ptr<Texture> tex;
 };
 
 #endif
