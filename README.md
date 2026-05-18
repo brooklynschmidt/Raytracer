@@ -25,6 +25,8 @@ In the same directory as the make file:
 - Texture Mapping
 - Perlin Noise (trilinear interpolation and hermitian smoothing)
 - Quadrilateral Primitive support
+- Background Colors
+- Emissive Lighting
 
 # References
 My rendition of: 

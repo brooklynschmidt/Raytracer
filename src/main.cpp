@@ -213,6 +213,38 @@ void simple_light() {
     cam.render(world);
 }
 
+void cornell_box() {
+    hittable_list world;
+
+    auto red = make_shared<Lambertian>(Color(0.65, 0.05, 0.05));
+    auto white = make_shared<Lambertian>(Color(0.73, 0.73, 0.73));
+    auto green = make_shared<Lambertian>(Color(0.12, 0.45, 0.15));
+    auto light = make_shared<DiffuseLight>(Color(15, 15, 15));
+
+    world.add(make_shared<Quad>(Point(555, 0, 0), Vec3(0, 555, 0), Vec3(0, 0, 555), green));
+    world.add(make_shared<Quad>(Point(0, 0, 0), Vec3(0, 555, 0), Vec3(0, 0, 555), red));
+    world.add(make_shared<Quad>(Point(343, 554, 332), Vec3(-130, 0, 0), Vec3(0, 0, -105), light));
+    world.add(make_shared<Quad>(Point(0, 0, 0), Vec3(555, 0, 0), Vec3(0, 0, 555), white));
+    world.add(make_shared<Quad>(Point(555, 555, 555), Vec3(-555, 0, 0), Vec3(0, 0, -555), white));
+    world.add(make_shared<Quad>(Point(0, 0, 555), Vec3(555, 0, 0), Vec3(0, 555, 0), white));
+
+    Camera cam;
+    cam.setAspectRatio(1.0);
+    cam.setImageWidth(600);
+    cam.setSampleCount(10);
+    cam.setMaxRays(50);
+    cam.setCameraVFov(40);
+    cam.setLookFrom(Point(278, 278, -800));
+    cam.setLookAt(Point(278, 278, 0));
+    cam.setVup(Vec3(0, 1, 0));
+    cam.setDefocusAngle(0.6);
+    cam.setFocusDist(10.0);
+    cam.setBackgroundColor(Color(0, 0, 0));
+
+    cam.render(world);
+
+}
+
 int main(int argc, char* argv[]) {
     if (argc <= 1) {
         std::cout << "Proper usage: ./main [int] > [file_name].ppm" << endl;
@@ -225,6 +257,7 @@ int main(int argc, char* argv[]) {
         case '4': perlin_spheres(); break;
         case '5': quads(); break;
         case '6': simple_light(); break;
+        case '7': cornell_box(); break;
         default: std::cout << "Couldn't render image, wrong input?" << endl;
     }
 }
