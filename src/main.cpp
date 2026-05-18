@@ -120,6 +120,29 @@ void earth() {
     cam.render(hittable_list(globe));
 }
 
+void perlin_spheres() {
+    hittable_list world;
+
+    auto pertext = make_shared<NoiseTexture>();
+    world.add(make_shared<Sphere>(Point(0, -1000, 0), 1000, make_shared<Lambertian>(pertext)));
+    world.add(make_shared<Sphere>(Point(0, 2, 0), 2, make_shared<Lambertian>(pertext)));
+
+    Camera cam;
+    double ratio = 16.0 / 9.0;
+    cam.setAspectRatio(ratio);
+    cam.setImageWidth(WIDTH);
+    cam.setSampleCount(10);
+    cam.setMaxRays(50);
+    cam.setCameraVFov(20);
+    cam.setLookFrom(Point(13, 2, 3));
+    cam.setLookAt(Point(0, 0, 0));
+    cam.setVup(Vec3(0, 1, 0));
+    cam.setDefocusAngle(0.6);
+    cam.setFocusDist(10.0);
+
+    cam.render(world);
+}
+
 int main(int argc, char* argv[]) {
     if (argc <= 1) {
         std::cout << "Proper usage: ./main [int] > [file_name].ppm" << endl;
@@ -129,6 +152,7 @@ int main(int argc, char* argv[]) {
         case '1': bouncing_spheres(); break;
         case '2': checkered_spheres(); break;
         case '3': earth(); break;
+        case '4': perlin_spheres(); break;
         default: std::cout << "Couldn't render image, wrong input?" << endl;
     }
 }

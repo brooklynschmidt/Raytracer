@@ -3,6 +3,7 @@
 
 #include <raytracer.h>
 #include <rtw_stb_image.h>
+#include <perlin.h>
 
 class Texture {
     public:
@@ -67,6 +68,17 @@ class ImageTexture : public Texture {
 
     private:
         RTW_Image image;    
+};
+
+class NoiseTexture : public Texture {
+    public:
+        NoiseTexture() {}
+        Color value(double u, double v, const Point& p) const override {
+            return Color(1, 1, 1) * noise.noise(p);
+        }
+
+    private:
+        Perlin noise;
 };
 
 
