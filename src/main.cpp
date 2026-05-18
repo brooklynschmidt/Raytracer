@@ -123,7 +123,7 @@ void earth() {
 void perlin_spheres() {
     hittable_list world;
 
-    auto pertext = make_shared<NoiseTexture>();
+    auto pertext = make_shared<NoiseTexture>(8);
     world.add(make_shared<Sphere>(Point(0, -1000, 0), 1000, make_shared<Lambertian>(pertext)));
     world.add(make_shared<Sphere>(Point(0, 2, 0), 2, make_shared<Lambertian>(pertext)));
 
