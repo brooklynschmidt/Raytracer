@@ -5,6 +5,8 @@
 #include <camera.h>
 #include <material.h>
 #include "bvh.h"
+#include <quad.h>
+
 
 #define WIDTH 400
 #define SAMPLES 10
@@ -143,6 +145,39 @@ void perlin_spheres() {
     cam.render(world);
 }
 
+void quads() {
+    hittable_list world;
+
+    // Materials
+    auto red = make_shared<Lambertian>(Color(1.0, 0.2, 0.2));
+    auto green = make_shared<Lambertian>(Color(0.2, 1.0, 0.2));
+    auto blue = make_shared<Lambertian>(Color(0.2, 0.2, 1.0));
+    auto orange = make_shared<Lambertian>(Color(1.0, 0.5, 0.0));
+    auto teal = make_shared<Lambertian>(Color(0.2, 0.8, 0.8));
+
+    // Quads
+    world.add(make_shared<Quad>(Point(-3, -2, 5), Vec3(0, 0, -4), Vec3(0, 4, 0), red));
+    world.add(make_shared<Quad>(Point(-2, -2, 0), Vec3(4, 0, 0), Vec3(0, 4, 0), green));
+    world.add(make_shared<Quad>(Point(3, -2, 1), Vec3(0, 0, 4), Vec3(0, 4, 0), blue));
+    world.add(make_shared<Quad>(Point(-2, 3, 1), Vec3(4, 0, 0), Vec3(0, 0, 4), orange));
+    world.add(make_shared<Quad>(Point(-2, -3, 5), Vec3(4, 0, 0), Vec3(0, 0, -4), teal));
+
+    Camera cam;
+    cam.setAspectRatio(1.0);
+    cam.setImageWidth(WIDTH);
+    cam.setSampleCount(10);
+    cam.setMaxRays(50);
+    cam.setCameraVFov(80);
+    cam.setLookFrom(Point(0, 0, 9));
+    cam.setLookAt(Point(0, 0, 0));
+    cam.setVup(Vec3(0, 1, 0));
+    cam.setDefocusAngle(0.6);
+    cam.setFocusDist(10.0);
+
+    cam.render(world);
+
+}
+
 int main(int argc, char* argv[]) {
     if (argc <= 1) {
         std::cout << "Proper usage: ./main [int] > [file_name].ppm" << endl;
@@ -153,6 +188,7 @@ int main(int argc, char* argv[]) {
         case '2': checkered_spheres(); break;
         case '3': earth(); break;
         case '4': perlin_spheres(); break;
+        case '5': quads(); break;
         default: std::cout << "Couldn't render image, wrong input?" << endl;
     }
 }

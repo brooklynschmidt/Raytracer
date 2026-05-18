@@ -11,13 +11,17 @@ class AxisAlignedBoundingBox {
         AxisAlignedBoundingBox() {}
 
         AxisAlignedBoundingBox(const Interval& x, const Interval& y, const Interval& z) :
-            x(x), y(y), z(z) {}
+            x(x), y(y), z(z) {
+                pad_to_minimus();
+            }
         
         AxisAlignedBoundingBox(const Point& a, const Point& b) {
             // the two points are extrema for the bounding box 
             x = (a.x() <= b.x()) ? Interval(a.x(), b.x()) : Interval(b.x(), a.x());
             y = (a.y() <= b.y()) ? Interval(a.y(), b.y()) : Interval(b.y(), a.y());
             z = (a.z() <= b.z()) ? Interval(a.z(), b.z()) : Interval(b.z(), a.z());
+
+            pad_to_minimus();
         }
 
         AxisAlignedBoundingBox(const AxisAlignedBoundingBox& box0, const AxisAlignedBoundingBox& box1) {
@@ -100,6 +104,14 @@ class AxisAlignedBoundingBox {
         }
 
         static const AxisAlignedBoundingBox empty, universe;
+    private:
+        void pad_to_minimus() {
+            // Adjust the AABB so that no side is narrower than some delta, padding if necessary
+            double delta = 0.0001;
+            if (x.size() < delta) x = x.expand(delta);
+            if (y.size() < delta) y = y.expand(delta);
+            if (z.size() < delta) z = z.expand(delta);
+        }
 
 };
 #endif
