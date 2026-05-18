@@ -23,6 +23,7 @@ In the same directory as the make file:
 - Motion Blur
 - Bounding Volume Hierarchies Optimization
 - Texture Mapping
+- Perlin Noise (trilinear interpolation and hermitian smoothing)
 
 # References
 My rendition of: 

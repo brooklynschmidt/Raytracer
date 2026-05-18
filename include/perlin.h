@@ -23,7 +23,7 @@ class Perlin {
             u = u * u * (3 - 2 * u);
             v = v * v * (3 - 2 * v);
             w = w * w * (3 - 2 * w);
-
+ 
             auto i = int(std::floor(p.x()));
             auto j = int(std::floor(p.y()));
             auto k = int(std::floor(p.z()));
