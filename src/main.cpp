@@ -100,6 +100,26 @@ void checkered_spheres() {
     cam.render(world);
 }
 
+void earth() {
+    auto earth_texture = make_shared<ImageTexture>("earthmap.jpg");
+    auto earth_surface = make_shared<Lambertian>(earth_texture);
+    auto globe = make_shared<Sphere>(Point(0, 0, 0), 2, earth_surface);
+
+    Camera cam;
+    double ratio = 16.0 / 9.0;
+    cam.setAspectRatio(ratio);
+    cam.setImageWidth(WIDTH);
+    cam.setSampleCount(10);
+    cam.setMaxRays(50);
+    cam.setCameraVFov(20);
+    cam.setLookFrom(Point(0, 0, 12));
+    cam.setLookAt(Point(0, 0, 0));
+    cam.setVup(Vec3(0, 1, 0));
+    cam.setDefocusAngle(0.6);
+    cam.setFocusDist(10.0);
+    cam.render(hittable_list(globe));
+}
+
 int main(int argc, char* argv[]) {
     if (argc <= 1) {
         std::cout << "Proper usage: ./main [int] > [file_name].ppm" << endl;
@@ -108,6 +128,7 @@ int main(int argc, char* argv[]) {
     switch (argv[1][0]) {
         case '1': bouncing_spheres(); break;
         case '2': checkered_spheres(); break;
+        case '3': earth(); break;
         default: std::cout << "Couldn't render image, wrong input?" << endl;
     }
 }

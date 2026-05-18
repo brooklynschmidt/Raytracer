@@ -1,6 +1,7 @@
 #include <rayutils.h>
 #include <material.h>
 
+// only need this one, maybe we can outsource it to ray.h?
 Color ray_color(const Ray& r, const int rayCount, const hittable& world) {
     if (rayCount <= 0) {
         return Color(0, 0, 0); // no light contribution when we have no more rays!
