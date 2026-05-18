@@ -24,6 +24,7 @@ In the same directory as the make file:
 - Bounding Volume Hierarchies Optimization
 - Texture Mapping
 - Perlin Noise (trilinear interpolation and hermitian smoothing)
+- Quadrilateral Primitive support
 
 # References
 My rendition of: 
