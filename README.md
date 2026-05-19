@@ -6,6 +6,13 @@ In the same directory as the make file:
 
 1. Moving spheres
 2. Checkered Spheres
+3. Earth
+4. Perlin Noise Spheres
+5. Quads
+6. Simple Lighting
+7. Cornell Box
+8. Cornell Box w/ other boxes
+9. Part 2 Final Scene
 
 # Feature List
 - Antialiasing w/ simple sampling algorithm
@@ -33,8 +40,8 @@ In the same directory as the make file:
 
 # References
 My rendition of: 
-[_Ray Tracing in One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html) and 
-[_Ray Tracing: The Next Week_](https://raytracing.github.io/books/RayTracingTheNextWeek.html).
+[_Ray Tracing in One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html),
+[_Ray Tracing: The Next Week_](https://raytracing.github.io/books/RayTracingTheNextWeek.html), and [_Ray Tracing: The Rest of Your Life_](https://raytracing.github.io/books/RayTracingTheRestOfYourLife.html).
 
 Thank you for your teachings and for providing public learning resources.
 
