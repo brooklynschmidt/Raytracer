@@ -27,6 +27,8 @@ In the same directory as the make file:
 - Quadrilateral Primitive support
 - Background Colors
 - Emissive Lighting
+- Instance Translation
+- Instance Rotation
 
 # References
 My rendition of: 

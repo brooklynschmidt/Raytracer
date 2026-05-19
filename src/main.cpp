@@ -228,13 +228,20 @@ void cornell_box() {
     world.add(make_shared<Quad>(Point(555, 555, 555), Vec3(-555, 0, 0), Vec3(0, 0, -555), white));
     world.add(make_shared<Quad>(Point(0, 0, 555), Vec3(555, 0, 0), Vec3(0, 555, 0), white));
 
-    world.add(box(Point(130, 0, 65), Point(295, 165, 230), white));
-    world.add(box(Point(265, 0, 295), Point(430, 330, 460), white));
+    shared_ptr<hittable> box1 = box(Point(0, 0, 0), Point(165, 330, 165), white);
+    box1 = make_shared<Rotate_Y>(box1, 15);
+    box1 = make_shared<Translate>(box1, Vec3(265, 0, 295));
+    world.add(box1);
+
+    shared_ptr<hittable> box2 = box(Point(0, 0, 0), Point(165, 165, 165), white);
+    box2 = make_shared<Rotate_Y>(box2, -18);
+    box2 = make_shared<Translate>(box2, Vec3(130, 0, 65));
+    world.add(box2);
 
     Camera cam;
     cam.setAspectRatio(1.0);
     cam.setImageWidth(600);
-    cam.setSampleCount(10);
+    cam.setSampleCount(200);
     cam.setMaxRays(50);
     cam.setCameraVFov(40);
     cam.setLookFrom(Point(278, 278, -800));
