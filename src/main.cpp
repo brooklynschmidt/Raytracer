@@ -281,7 +281,7 @@ void cornell_smoke() {
     world.add(make_shared<ConstantMedium>(box1, 0.01, Color(0, 0, 0)));
     world.add(make_shared<ConstantMedium>(box2, 0.01, Color(1, 1, 1)));
 
-        Camera cam;
+    Camera cam;
     cam.setAspectRatio(1.0);
     cam.setImageWidth(600);
     cam.setSampleCount(10);
@@ -291,6 +291,78 @@ void cornell_smoke() {
     cam.setLookAt(Point(278, 278, 0));
     cam.setVup(Vec3(0, 1, 0));
     cam.setDefocusAngle(0.6);
+    cam.setFocusDist(10.0);
+    cam.setBackgroundColor(Color(0, 0, 0));
+
+    cam.render(world);
+}
+
+void part2_final_scene() {
+    hittable_list boxes1;
+    auto ground = make_shared<Lambertian>(Color(0.48, 0.83, 0.53));
+
+    int boxes_per_side = 20;
+    for (int i = 0; i < boxes_per_side; i++) {
+        for (int j = 0; j < boxes_per_side; j++) {
+            auto w = 100.0;
+            auto x0 = -1000.0 + i * w;
+            auto z0 = -1000.0 + j * w;
+            auto y0 = 0.0;
+            auto x1 = x0 + w;
+            auto y1 = random_double(1, 101);
+            auto z1 = z0 + w;
+            boxes1.add(box(Point(x0, y0, z0), Point(x1, y1, z1), ground));
+        }
+    }
+
+    hittable_list world;
+    world.add(make_shared<BVH_Node>(boxes1));
+
+    auto light = make_shared<DiffuseLight>(Color(7, 7, 7));
+    world.add(make_shared<Quad>(Point(123, 554, 147), Vec3(300, 0, 0), Vec3(0, 0, 256), light));
+
+    auto center1 = Point(400, 400, 200);
+    Vec3 offset = Vec3(30, 0, 0);
+    auto px = center1.x() + offset.x();
+    auto py = center1.y() + offset.y();
+    auto pz = center1.z() + offset.z();
+    auto center2 = Point(px, py, pz);
+    auto sphere_material = make_shared<Lambertian>(Color(0.7, 0.3, 0.1));
+    world.add(make_shared<Sphere>(center1, center2, 50, sphere_material));
+
+    world.add(make_shared<Sphere>(Point(260, 150, 45), 50, make_shared<Dielectric>(1.5)));
+    world.add(make_shared<Sphere>(Point(0, 150, 145), 50, make_shared<Metal>(Color(0.8, 0.8, 0.9), 1.0)));
+
+    auto boundary = make_shared<Sphere>(Point(360, 150, 145), 70, make_shared<Dielectric>(1.5));
+    world.add(boundary);
+    world.add(make_shared<ConstantMedium>(boundary, 0.2, Color(0.2, 0.4, 0.9)));
+    boundary = make_shared<Sphere>(Point(0, 0, 0), 5000, make_shared<Dielectric>(1.5));
+    world.add(make_shared<ConstantMedium>(boundary, 0.0001, Color(1, 1, 1)));
+
+    auto emat = make_shared<Lambertian>(make_shared<ImageTexture>("earthmap.jpg"));
+    world.add(make_shared<Sphere>(Point(400, 200, 400), 100, emat));
+    auto pertext = make_shared<NoiseTexture>(0.2);
+    world.add(make_shared<Sphere>(Point(220, 280, 300), 80, make_shared<Lambertian>(pertext)));
+
+    hittable_list boxes2;
+    auto white = make_shared<Lambertian>(Color(0.73, 0.73, 0.73));
+    int ns = 1000;
+    for (int j = 0; j < ns; j++) {
+        boxes2.add(make_shared<Sphere>(Point(random_int(0, 165), random_int(0, 165), random_int(0, 165)), 10, white));
+    }
+
+    world.add(make_shared<Translate>(make_shared<Rotate_Y>(make_shared<BVH_Node>(boxes2), 15), Vec3(-100, 270, 395)));
+
+    Camera cam;
+    cam.setAspectRatio(1.0);
+    cam.setImageWidth(600);
+    cam.setSampleCount(10);
+    cam.setMaxRays(50);
+    cam.setCameraVFov(40);
+    cam.setLookFrom(Point(478, 278, -600));
+    cam.setLookAt(Point(278, 278, 0));
+    cam.setVup(Vec3(0, 1, 0));
+    cam.setDefocusAngle(0);
     cam.setFocusDist(10.0);
     cam.setBackgroundColor(Color(0, 0, 0));
 
@@ -311,6 +383,7 @@ int main(int argc, char* argv[]) {
         case '6': simple_light(); break;
         case '7': cornell_box(); break;
         case '8': cornell_smoke(); break;
+        case '9': part2_final_scene(); break;
         default: std::cout << "Couldn't render image, wrong input?" << endl;
     }
 }

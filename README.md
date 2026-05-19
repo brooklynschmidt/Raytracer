@@ -29,6 +29,7 @@ In the same directory as the make file:
 - Emissive Lighting
 - Instance Translation
 - Instance Rotation
+- Smoke / Fog (Volumes / Constant Density Mediums)
 
 # References
 My rendition of: 
