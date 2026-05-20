@@ -7,7 +7,7 @@ LDFLAGS := -fsanitize=address
 INCLUDES := -I./thirdparty/glm -I./include
 
 # Files
-SRC := $(wildcard src/*.cpp) $(wildcard utils/*.cpp)
+SRC := $(wildcard src/*.cpp) $(wildcard src/*.cc) $(wildcard utils/*.cpp)
 OBJ := $(SRC:.cpp=.o)
 
 # Output
