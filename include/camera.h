@@ -77,6 +77,9 @@ class Camera {
 
         Vec3 u, v, w; 
 
+        int sqrt_spp; // Square root of number of samples per pixel
+        double recip_sqrt_spp; // 1 / sqrt_spp
+
         // This variable prevents stack blowout from recursive calls in the ray_color function. 
         int max_ray_count; // Max number of rays that bounce in the scene
 
@@ -84,11 +87,13 @@ class Camera {
 
         void initialize();
         Vec3 sample_square() const;
+        Vec3 sample_square_stratified(int s_i, int s_j) const;
 
         // Construct Camera Ray starting from origin, directed at randomly sampled point around pixel (i, j)
-        Ray create_camera_ray(int i, int j);
+        Ray create_camera_ray(int i, int j, int s_i, int s_j);
 
         Point defocus_disk_sample();
+
 };
 
 #endif
