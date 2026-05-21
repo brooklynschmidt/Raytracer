@@ -14,13 +14,17 @@ Color ray_color(const Ray& r, const int rayCount, const hittable& world, Color b
 
     Ray scattered;
     Color attenuation;
+    double pdf_value;
     Color color_from_emission = rec.mat->emitted(rec.u, rec.v, rec.p);
 
-    if (!rec.mat->scatter(r, rec, attenuation, scattered)) {
+    if (!rec.mat->scatter(r, rec, attenuation, scattered, pdf_value)) {
         return color_from_emission;
     }
 
-    Color color_from_scatter = attenuation * ray_color(scattered, rayCount - 1, world, background);
+    double scattering_pdf = rec.mat->scattering_pdf(r, rec, scattered);
+    pdf_value = scattering_pdf;
+
+    Color color_from_scatter = (attenuation * scattering_pdf * ray_color(scattered, rayCount - 1, world, background)) / pdf_value;
 
     return color_from_emission + color_from_scatter;
 }

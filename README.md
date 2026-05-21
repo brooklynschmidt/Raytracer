@@ -37,6 +37,10 @@ In the same directory as the make file:
 - Instance Translation
 - Instance Rotation
 - Smoke / Fog (Volumes / Constant Density Mediums)
+- Stratified Sampling
+- 1D Monte Carlo Integration
+- Importance Sampling
+- Monte Carlo Integration on the Sphere of Directions
 
 # References
 My rendition of: 

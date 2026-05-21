@@ -3,6 +3,7 @@
 
 #include <hittable.h>
 #include <texture.h>
+#include <onb.h>
 
 
 // Abstract Material Class to encapsulate unique behaviors and materials
@@ -15,9 +16,13 @@ class Material {
         }
         
         // We choose hit_record so we can encapsulate arguments and send them as a group
-        virtual bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const {
+        virtual bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered, double& pdf) const {
             return false;
         }    
+
+        virtual double scattering_pdf(const Ray& r_in, const hit_record& rec, const Ray& scattered) const {
+            return 0;
+        }
 };
 
 // We choose to always scatter and attenuate light according to its reflectance
@@ -26,16 +31,17 @@ class Lambertian : public Material {
         Lambertian(const Color& albedo) : tex(make_shared<SolidColor>(albedo)) {}
         Lambertian(shared_ptr<Texture> tex) : tex(tex) {}
 
-        bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const override {
-            auto scatterDirection = rec.normal + random_unit_vector();
-            // Accounts for case where random unit vector is the exact opposite of the normal
-            if (near_zero(scatterDirection)) {
-                scatterDirection = rec.normal;
-            }
-
-            scattered = Ray(rec.p, scatterDirection, r_in.getTime());
+        bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered, double& pdf) const override {
+            ONB uvw(rec.normal);
+            auto scatter_dir = uvw.transform(random_cosine_direction());
+            scattered = Ray(rec.p, scatter_dir / scatter_dir.magnitude(), r_in.getTime());
             attenuation = tex->value(rec.u, rec.v, rec.p);
+            pdf = dot(uvw.w(), scattered.direction()) / pi;
             return true;
+        }
+
+        double scattering_pdf(const Ray& r_in, const hit_record& rec, const Ray& scattered) const override {
+            return 1 / (2 * pi);
         }
 
     private:
@@ -52,7 +58,7 @@ class Metal : public Material {
         Absorb grazing rays or big spheres that scatter below the surface.
         The fuzz sphere is scaled in relation to the reflection vector, thus a normalization is required. 
         */
-        bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const override {
+        bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered, double& pdf) const override {
             Vec3 reflected = reflect(r_in.direction(), rec.normal);
             reflected = unit(reflected) + (fuzz * random_unit_vector());
             scattered = Ray(rec.p, reflected, r_in.getTime());
@@ -68,7 +74,7 @@ class Dielectric : public Material {
     public:
         Dielectric(double refraction_index) : refraction_index(refraction_index) {}
 
-        bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const override {
+        bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered, double& pdf) const override {
             // Always 1, glass surfaces absorb nothing
             attenuation = Color(1.0, 1.0, 1.0);
             double ri = rec.front_face ? (1.0 / refraction_index) : refraction_index;
@@ -119,10 +125,15 @@ class Isotropic : public Material {
         Isotropic(const Color& albedo) : tex(make_shared<SolidColor>(albedo)) {}
         Isotropic(shared_ptr<Texture> tex) : tex(tex) {}
 
-        bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const override {
+        bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered, double& pdf) const override {
             scattered = Ray(rec.p, random_unit_vector(), r_in.getTime());
             attenuation = tex->value(rec.u, rec.v, rec.p);
+            pdf = 1 / (4 * pi);
             return true;
+        }
+
+        double scattering_pdf(const Ray& r_in, const hit_record& rec, const Ray& scattered) const override {
+            return 1 / (4 * pi);
         }
     private:
         shared_ptr<Texture> tex;

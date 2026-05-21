@@ -242,7 +242,7 @@ void cornell_box() {
     Camera cam;
     cam.setAspectRatio(1.0);
     cam.setImageWidth(600);
-    cam.setSampleCount(200);
+    cam.setSampleCount(1000);
     cam.setMaxRays(50);
     cam.setCameraVFov(40);
     cam.setLookFrom(Point(278, 278, -800));
